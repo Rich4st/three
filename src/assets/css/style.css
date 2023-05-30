@@ -4,5 +4,29 @@
 }
 
 body {
-  background-color: skyblue;
+  background-color: rgb(36, 58, 66);
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.page h1 {
+  margin: 30px 60px;
+  font-size: 40px;
+  z-index: 999;
+}
+
+.page h3 {
+  font-size: 30px;
 }
