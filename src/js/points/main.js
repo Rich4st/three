@@ -1,5 +1,5 @@
 /**
- * @fileoverview point material
+ * @fileoverview raycaster
  */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -9,14 +9,49 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 
 camera.position.set(0, 0, 5);
 
-const sphereGeometry = new THREE.SphereGeometry(1, 30, 30);
-const pointsMaterial = new THREE.PointsMaterial({
-  size: 0.02,
+
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({
+  color: 0x00ff00,
+  wireframe: true,
 });
-const points = new THREE.Points(sphereGeometry, pointsMaterial);
+
+const redMaterial = new THREE.MeshBasicMaterial({
+  color: 0xff0000,
+  wireframe: true,
+});
+
+const cubes = [];
+
+// generate 10 cubes
+for (let i = 0; i < 10; i++) {
+  const cube = new THREE.Mesh(geometry, material);
+  cube.position.set(
+    (Math.random() - 0.5) * 5,
+    (Math.random() - 0.5) * 5,
+    (Math.random() - 0.5) * 5,
+  )
+  cubes.push(cube);
+  scene.add(cube);
+}
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+window.addEventListener('mousemove', (event) => {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  
+  const intersects = raycaster.intersectObjects(cubes);
+  intersects[0].object.material = redMaterial;
+})
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer, physicallyCorrectLights = true;
 
 document.body.appendChild(renderer.domElement);
 
@@ -24,7 +59,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 const axesHelper = new THREE.AxesHelper(5);
 
 scene.add(camera);
-scene.add(points);
 scene.add(axesHelper);
 
 function animate() {
