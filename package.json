@@ -17,6 +17,7 @@
     "three": "^0.152.2"
   },
   "devDependencies": {
+    "@parcel/transformer-glsl": "2.9.0",
     "parcel": "^2.9.0"
   }
 }
